@@ -4,7 +4,7 @@
 
 A TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/)
 
-It does support the same function offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
+It does support the same functionality offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
 
 
 ## Install
@@ -34,7 +34,7 @@ fv(0.05 / 12, 10 * 12, -100, -100) // 15692.928894335748
 ## Implemented functions
 
  - [X] `fv`
- - [ ] `pmt` (TODO)
+ - [X] `pmt` (TODO)
  - [ ] `nper` (TODO)
  - [ ] `ipmt` (TODO)
  - [ ] `ppmt` (TODO)

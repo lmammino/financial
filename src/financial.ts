@@ -20,7 +20,7 @@ export enum PaymentDueTime {
  * an additional monthly savings of $100. Assume the interest rate is
  * 5% (annually) compounded monthly?
  *
- * ```js
+ * ```javascript
  * import { fv } from 'financial'
  *
  * fv(0.05 / 12, 10 * 12, -100, -100) // 15692.928894335748
@@ -46,32 +46,9 @@ export enum PaymentDueTime {
  *
  * ## References
  *
- * Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May).
- * Open Document Format for Office Applications (OpenDocument)v1.2,
- * Part 2: Recalculated Formula (OpenFormula) Format - Annotated Version,
- * Pre-Draft 12. Organization for the Advancement of Structured Information
- * Standards (OASIS). Billerica, MA, USA. [ODT Document].
- * [Link](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
+ * [Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May)](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
  */
 export function fv (rate: number, nper: number, pmt: number, pv: number, when : PaymentDueTime = PaymentDueTime.End) : number {
-  // when = _convert_when(when)
-  // rate, nper, pmt, pv, when = np.broadcast_arrays(rate, nper, pmt, pv, when)
-  // fv_array = np.empty_like(rate)
-  // zero = rate == 0
-  // nonzero = ~zero
-  // fv_array[zero] = -(pv[zero] + pmt[zero] * nper[zero])
-  // rate_nonzero = rate[nonzero]
-  // temp = (1 + rate_nonzero)**nper[nonzero]
-  // fv_array[nonzero] = (
-  //     - pv[nonzero] * temp
-  //     - pmt[nonzero] * (1 + rate_nonzero * when[nonzero]) / rate_nonzero
-  //     * (temp - 1)
-  // )
-  // if np.ndim(fv_array) == 0:
-  //     # Follow the ufunc convention of returning scalars for scalar
-  //     # and 0d array inputs.
-  //     return fv_array.item(0)
-  // return fv_array
   const isRateZero = rate === 0
 
   if (isRateZero) {
@@ -81,4 +58,78 @@ export function fv (rate: number, nper: number, pmt: number, pv: number, when : 
   const temp = (1 + rate) ** nper
   const whenMult = when === PaymentDueTime.Begin ? 1 : 0
   return (-pv * temp - pmt * (1 + rate * whenMult) / rate * (temp - 1))
+}
+
+/**
+ * Compute the payment against loan principal plus interest.
+ *
+ * @param rate - Rate of interest (per period)
+ * @param nper - Number of compounding periods (e.g., number of payments)
+ * @param pv - Present value (e.g., an amount borrowed)
+ * @param fv - Future value (e.g., 0)
+ * @param when - When payments are due
+ *
+ * @returns the (fixed) periodic payment
+ *
+ * ## Examples
+ *
+ * What is the monthly payment needed to pay off a $200,000 loan in 15
+ * years at an annual interest rate of 7.5%?
+ *
+ * ```javascript
+ * import { pmt } from 'financial'
+ *
+ * pmt(0.075/12, 12*15, 200000) // -1854.0247200054619
+ * ```
+ *
+ * In order to pay-off (i.e., have a future-value of 0) the $200,000 obtained
+ * today, a monthly payment of $1,854.02 would be required.  Note that this
+ * example illustrates usage of `fv` having a default value of 0.
+ *
+ * ## Notes
+ *
+ * The payment is computed by solving the equation:
+ *
+ * ```
+ * fv + pv * (1 + rate) ** nper + pmt * (1 + rate*when) / rate * ((1 + rate) ** nper - 1) == 0
+ * ```
+ *
+ * or, when `rate == 0`:
+ *
+ * ```
+ * fv + pv + pmt * nper == 0
+ * ```
+ *
+ * for `pmt`.
+ *
+ * Note that computing a monthly mortgage payment is only
+ * one use for this function.  For example, `pmt` returns the
+ * periodic deposit one must make to achieve a specified
+ * future balance given an initial deposit, a fixed,
+ * periodically compounded interest rate, and the total
+ * number of periods.
+ *
+ * ## References
+ *
+ * [Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May)](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
+ */
+export function pmt (rate: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End): number {
+  // when = _convert_when(when)
+  // (rate, nper, pv, fv, when) = map(np.array, [rate, nper, pv, fv, when])
+  // temp = (1 + rate)**nper
+  // mask = (rate == 0)
+  // masked_rate = np.where(mask, 1, rate)
+  // fact = np.where(mask != 0, nper,
+  //                 (1 + masked_rate*when)*(temp - 1)/masked_rate)
+  // return -(fv + pv*temp) / fact
+
+  const isRateZero = rate === 0
+  const temp = (1 + rate) ** nper
+  const whenMult = when === PaymentDueTime.Begin ? 1 : 0
+  const maskedRate = isRateZero ? 1 : rate
+  const fact = isRateZero
+    ? nper
+    : (1 + maskedRate * whenMult) * (temp - 1) / maskedRate
+
+  return -(fv + pv * temp) / fact
 }
