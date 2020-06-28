@@ -1,6 +1,10 @@
 # Financial
 
+![CI](https://github.com/lmammino/financial/workflows/CI/badge.svg)
+
 A TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/)
+
+It does support the same function offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
 
 
 ## Install
