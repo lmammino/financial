@@ -3,9 +3,6 @@
   "description": "A Zero-dependency TypeScript/JavaScript port of numpy-financial",
   "author": "Luciano Mammino",
   "version": "0.0.6",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
