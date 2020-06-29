@@ -1,4 +1,4 @@
-import { fv, pmt } from '../src/financial'
+import { fv, pmt, nper } from '../src/financial'
 
 describe('Source code docs examples', () => {
   test('fv()', () => {
@@ -7,5 +7,9 @@ describe('Source code docs examples', () => {
 
   test('pmt()', () => {
     expect(pmt(0.075 / 12, 12 * 15, 200000)).toBeCloseTo(-1854.0247200054619, 6)
+  })
+
+  test('nper()', () => {
+    expect(nper(0.07 / 12, -150, 8000)).toBeCloseTo(64.07334877066185, 6)
   })
 })

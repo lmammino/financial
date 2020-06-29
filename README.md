@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/lmammino/financial/workflows/CI/badge.svg)
 
-A TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/)
+A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/)
 
 It does support the same functionality offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
 
@@ -34,15 +34,15 @@ fv(0.05 / 12, 10 * 12, -100, -100) // 15692.928894335748
 ## Implemented functions
 
  - [X] `fv`
- - [X] `pmt` (TODO)
- - [ ] `nper` (TODO)
- - [ ] `ipmt` (TODO)
- - [ ] `ppmt` (TODO)
- - [ ] `pv` (TODO)
- - [ ] `rate` (TODO)
- - [ ] `irr` (TODO)
- - [ ] `npv` (TODO)
- - [ ] `mirr` (TODO)
+ - [X] `pmt`
+ - [X] `nper`
+ - [ ] `ipmt`
+ - [ ] `ppmt`
+ - [ ] `pv`
+ - [ ] `rate`
+ - [ ] `irr`
+ - [ ] `npv`
+ - [ ] `mirr`
 
 
 ## Local Development

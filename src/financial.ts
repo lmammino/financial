@@ -114,15 +114,6 @@ export function fv (rate: number, nper: number, pmt: number, pv: number, when : 
  * [Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May)](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
  */
 export function pmt (rate: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End): number {
-  // when = _convert_when(when)
-  // (rate, nper, pv, fv, when) = map(np.array, [rate, nper, pv, fv, when])
-  // temp = (1 + rate)**nper
-  // mask = (rate == 0)
-  // masked_rate = np.where(mask, 1, rate)
-  // fact = np.where(mask != 0, nper,
-  //                 (1 + masked_rate*when)*(temp - 1)/masked_rate)
-  // return -(fv + pv*temp) / fact
-
   const isRateZero = rate === 0
   const temp = (1 + rate) ** nper
   const whenMult = when === PaymentDueTime.Begin ? 1 : 0
@@ -132,4 +123,72 @@ export function pmt (rate: number, nper: number, pv: number, fv = 0, when = Paym
     : (1 + maskedRate * whenMult) * (temp - 1) / maskedRate
 
   return -(fv + pv * temp) / fact
+}
+
+/**
+ * Compute the number of periodic payments.
+ *
+ * @param rate - Rate of interest (per period)
+ * @param pmt - Payment
+ * @param pv - Present value
+ * @param fv - Future value
+ * @param when - When payments are due
+ *
+ * ## Examples
+ *
+ * If you only had $150/month to pay towards the loan, how long would it take
+ * to pay-off a loan of $8,000 at 7% annual interest?
+ *
+ * ```javascript
+ * import { nper } from 'financial'
+ *
+ * Math.round(nper(0.07/12, -150, 8000), 5) // 64.07335
+ * ```
+ *
+ * So, over 64 months would be required to pay off the loan.
+ *
+ * ## Notes
+ *
+ * The number of periods `nper` is computed by solving the equation:
+ *
+ * ```
+ * fv + pv * (1+rate) ** nper + pmt * (1+rate * when) / rate * ((1+rate) ** nper-1) = 0
+ * ```
+ *
+ * but if `rate = 0` then:
+ *
+ * ```
+ * fv + pv + pmt * nper = 0
+ * ```
+ */
+export function nper (rate: number, pmt: number, pv: number, fv = 0, when = PaymentDueTime.End) : number {
+  // when = _convert_when(when)
+  // rate, pmt, pv, fv, when = np.broadcast_arrays(rate, pmt, pv, fv, when)
+  // nper_array = np.empty_like(rate, dtype=np.float64)
+
+  // zero = rate == 0
+  // nonzero = ~zero
+
+  // with np.errstate(divide='ignore'):
+  //     # Infinite numbers of payments are okay, so ignore the
+  //     # potential divide by zero.
+  //     nper_array[zero] = -(fv[zero] + pv[zero]) / pmt[zero]
+
+  // nonzero_rate = rate[nonzero]
+  // z = pmt[nonzero] * (1 + nonzero_rate * when[nonzero]) / nonzero_rate
+  // nper_array[nonzero] = (
+  //     np.log((-fv[nonzero] + z) / (pv[nonzero] + z))
+  //     / np.log(1 + nonzero_rate)
+  // )
+
+  // return nper_array
+
+  const isRateZero = rate === 0
+  if (isRateZero) {
+    return -(fv + pv) / pmt
+  }
+
+  const whenMult = when === PaymentDueTime.Begin ? 1 : 0
+  const z = pmt * (1 + rate * whenMult) / rate
+  return Math.log((-fv + z) / (pv + z)) / Math.log(1 + rate)
 }

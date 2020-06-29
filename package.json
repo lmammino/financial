@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -32,6 +32,7 @@
     "trailingComma": "es5"
   },
   "name": "financial",
+  "description": "A Zero-dependency TypeScript/JavaScript port of numpy-financial",
   "author": "Luciano Mammino",
   "module": "dist/financial.esm.js",
   "devDependencies": {
@@ -48,5 +49,21 @@
     "tslib": "^2.0.0",
     "typedoc": "^0.17.7",
     "typescript": "^3.9.5"
-  }
+  },
+  "keywords": [
+    "financial",
+    "numpy",
+    "numpy-financial",
+    "mortgage",
+    "fv",
+    "pmt",
+    "nper",
+    "ipmt",
+    "ppmt",
+    "pv",
+    "rate",
+    "irr",
+    "npv",
+    "mirr"
+  ]
 }
