@@ -1,6 +1,9 @@
 # Financial
 
-![CI](https://github.com/lmammino/financial/workflows/CI/badge.svg)
+[![npm version](https://badge.fury.io/js/financial.svg)](https://badge.fury.io/js/financial)
+[![CI](https://github.com/lmammino/financial/workflows/CI/badge.svg)](https://github.com/lmammino/financial/actions?query=workflow%3ACI)
+[![Documentation](https://api.netlify.com/api/v1/badges/eca2653e-dcaa-41db-865c-ab635687e69d/deploy-status)](https://financejs.netlify.app/)
+
 
 A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/)
 

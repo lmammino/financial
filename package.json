@@ -18,7 +18,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "build:docs": "typedoc --out docs/ src/",
-    "test": "tsdx test",
+    "test": "tsdx test --coverage",
     "test:watch": "tsdx test --watch",
     "lint": "tsdx lint",
     "prepare": "tsdx build"
