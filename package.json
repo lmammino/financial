@@ -2,7 +2,7 @@
   "name": "financial",
   "description": "A Zero-dependency TypeScript/JavaScript port of numpy-financial",
   "author": "Luciano Mammino <> (https://loige.co)",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

@@ -31,15 +31,15 @@ jobs:
         env:
           CI: true
 
-      - name: Publish on NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Build (docs)
         run: yarn run build:docs
         env:
           CI: true
+
+      - name: Publish on NPM
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish docs to Netlify
         uses: jsmrcaga/action-netlify-deploy@v1.1.0
