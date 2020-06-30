@@ -1,7 +1,9 @@
 name: Release
 
 on:
-  release
+  release:
+    types:
+      - created
 
 jobs:
   release:
@@ -46,7 +48,7 @@ jobs:
           CI: true
 
       - name: Publish docs to Netlify
-        uses: jsmrcaga/action-netlify-deploy@v1
+        uses: jsmrcaga/action-netlify-deploy@v1.1.0
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
           NETLIFY_SITE_ID: financejs
