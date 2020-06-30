@@ -279,6 +279,8 @@ export function ipmt (rate: number, per: number, nper: number, pv: number, fv = 
  * function to not interfere with the 'fv' keyword argument within the 'ipmt'
  * function.  It is the 'remaining balance on loan' which might be useful as
  * it's own function, but is easily calculated with the 'fv' function.
+ *
+ * @private
  */
 function _rbl (rate: number, per: number, pmt: number, pv: number, when: PaymentDueTime) {
   return fv(rate, (per - 1), pmt, pv, when)

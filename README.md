@@ -10,7 +10,7 @@ A Zero-Dependency TypeScript / JavaScript financial utility library inspired by 
 It does support the same functionality offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
 
 
-📖 [financejs.netlify.app](https://financejs.netlify.app/)
+📖 **API DOCS** 📖 : [financialjs.netlify.app](https://financialjs.netlify.app)
 
 
 ## Install

@@ -2,7 +2,7 @@
   "name": "financial",
   "description": "A Zero-dependency TypeScript/JavaScript port of numpy-financial",
   "author": "Luciano Mammino <no@spam.com> (https://loige.co)",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "repository": {
     "type": "git",
     "url": "https://github.com/lmammino/financial.git"
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/lmammino/financial/issues"
   },
-  "homepage": "https://financejs.netlify.app/",
+  "homepage": "https://financialjs.netlify.app",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
