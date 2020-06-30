@@ -1,4 +1,4 @@
-import { fv, pmt, nper, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, PaymentDueTime } from '../src/financial'
 
 // Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
@@ -49,5 +49,22 @@ describe('nper()', () => {
 
   it('calculates float with rate 0', () => {
     expect(nper(0, -100, 1000)).toBeCloseTo(10, 6)
+  })
+})
+
+describe('ipmt()', () => {
+  it('calculates float when is end', () => {
+    expect(ipmt(0.1 / 12, 1, 24, 2000)).toBeCloseTo(-16.666667, 6)
+    expect(ipmt(0.1 / 12, 2, 24, 2000)).toBeCloseTo(-16.03647345, 6)
+    expect(ipmt(0.1 / 12, 3, 24, 2000)).toBeCloseTo(-15.40102862, 6)
+    expect(ipmt(0.1 / 12, 4, 24, 2000)).toBeCloseTo(-14.76028842, 6)
+  })
+
+  it('calculates float when is begin', () => {
+    expect(ipmt(0.1 / 12, 1, 24, 2000, 0, PaymentDueTime.Begin)).toBe(0)
+    expect(ipmt(0.001988079518355057, 0, 360, 300000, 0, PaymentDueTime.Begin)).toBe(Number.NaN)
+    expect(ipmt(0.001988079518355057, 1, 360, 300000, 0, PaymentDueTime.Begin)).toBe(0)
+    expect(ipmt(0.001988079518355057, 2, 360, 300000, 0, PaymentDueTime.Begin)).toBeCloseTo(-594.107158, 6)
+    expect(ipmt(0.001988079518355057, 3, 360, 300000, 0, PaymentDueTime.Begin)).toBeCloseTo(-592.971592, 6)
   })
 })

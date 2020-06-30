@@ -15,6 +15,7 @@ module.exports = {
   plugins: [
     '@typescript-eslint'
   ],
+  ignorePatterns: ['dist/**.js'],
   rules: {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error'
