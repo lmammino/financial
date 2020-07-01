@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, PaymentDueTime } from '../src/financial'
 
 // Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
@@ -66,5 +66,17 @@ describe('ipmt()', () => {
     expect(ipmt(0.001988079518355057, 1, 360, 300000, 0, PaymentDueTime.Begin)).toBe(0)
     expect(ipmt(0.001988079518355057, 2, 360, 300000, 0, PaymentDueTime.Begin)).toBeCloseTo(-594.107158, 6)
     expect(ipmt(0.001988079518355057, 3, 360, 300000, 0, PaymentDueTime.Begin)).toBeCloseTo(-592.971592, 6)
+  })
+})
+
+describe('ppmt()', () => {
+  it('calculates float when is end', () => {
+    expect(ppmt(0.1 / 12, 1, 60, 55000)).toBeCloseTo(-710.25412578642, 6)
+    expect(ppmt(0.08 / 12, 1, 60, 15000)).toBeCloseTo(-204.145914, 6)
+  })
+
+  it('calculates float when is begin', () => {
+    expect(ppmt(0.1 / 12, 1, 60, 55000, 0, PaymentDueTime.Begin)).toBeCloseTo(-1158.929712, 6)
+    expect(ppmt(0.08 / 12, 1, 60, 15000, 0, PaymentDueTime.Begin)).toBeCloseTo(-302.131703, 6)
   })
 })

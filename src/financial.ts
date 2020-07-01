@@ -1,5 +1,10 @@
+/**
+ * When payments are due
+ */
 export enum PaymentDueTime {
+  /** Payments due at the beginning of a period */
   Begin = 'begin', // 1
+  /** Payments are due at the end of a period */
   End = 'end' // 0
 }
 
@@ -272,6 +277,23 @@ export function ipmt (rate: number, per: number, nper: number, pv: number, fv = 
   }
 
   return ipmtVal
+}
+
+/**
+ * Compute the payment against loan principal.
+ *
+ * @param rate - Rate of interest (per period)
+ * @param per - Amount paid against the loan changes.  The `per` is the period of interest.
+ * @param nper - Number of compounding periods
+ * @param pv - Present value
+ * @param fv - Future value
+ * @param when - When payments are due
+ *
+ * @returns the payment against loan principal
+ */
+export function ppmt (rate: number, per: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End) : number {
+  const total = pmt(rate, nper, pv, fv, when)
+  return total - ipmt(rate, per, nper, pv, fv, when)
 }
 
 /**

@@ -85,7 +85,7 @@ There's no `default` export in the ESM implementation, so you have to explicitel
  - [X] `pmt`
  - [X] `nper`
  - [X] `ipmt`
- - [ ] `ppmt`
+ - [X] `ppmt`
  - [ ] `pv`
  - [ ] `rate`
  - [ ] `irr`

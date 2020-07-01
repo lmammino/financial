@@ -2,7 +2,7 @@
   "name": "financial",
   "description": "A Zero-dependency TypeScript/JavaScript port of numpy-financial",
   "author": "Luciano Mammino <no@spam.com> (https://loige.co)",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "repository": {
     "type": "git",
     "url": "https://github.com/lmammino/financial.git"
