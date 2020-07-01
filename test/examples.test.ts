@@ -38,4 +38,12 @@ describe('Source code docs examples', () => {
   test('pv()', () => {
     expect(f.pv(0.05 / 12, 10 * 12, -100, 15692.93)).toBeCloseTo(-100.00067131625819, 6)
   })
+
+  test('irr()', () => {
+    expect(f.irr([-100, 39, 59, 55, 20])).toBeCloseTo(0.2809484, 6)
+    expect(f.irr([-100, 0, 0, 74])).toBeCloseTo(-0.0954958, 6)
+    expect(f.irr([-100, 100, 0, -7])).toBeCloseTo(-0.083300, 6)
+    expect(f.irr([-100, 100, 0, 7])).toBeCloseTo(0.0620584, 6)
+    expect(f.irr([-5, 10.5, 1, -8, 1])).toBeCloseTo(0.088598, 6)
+  })
 })

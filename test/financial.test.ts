@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, ppmt, pv, rate, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, pv, rate, irr, PaymentDueTime } from '../src/financial'
 
 // Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
@@ -125,5 +125,32 @@ describe('rate()', () => {
 
   it('calculates float with a custom guess, tolerance and maxIter', () => {
     expect(rate(10, 0, -3500, 10000, PaymentDueTime.Begin, 0.2, 1e-5, 200)).toBeCloseTo(0.1106908, 6)
+  })
+})
+
+describe('irr()', () => {
+  it('calculates basic values', () => {
+    expect(irr([-150000, 15000, 25000, 35000, 45000, 60000])).toBeCloseTo(0.052433, 6)
+    expect(irr([-100, 0, 0, 74])).toBeCloseTo(-0.095496, 6)
+    expect(irr([-100, 39, 59, 55, 20])).toBeCloseTo(0.2809484, 6)
+    expect(irr([-100, 100, 0, -7])).toBeCloseTo(-0.083300, 6)
+    expect(irr([-100, 100, 0, 7])).toBeCloseTo(0.0620585, 6)
+    expect(irr([-5, 10.5, 1, -8, 1])).toBeCloseTo(0.088598, 6)
+  })
+
+  it('calculates trailing zeroes correctly', () => {
+    expect(irr([-5, 10.5, 1, -8, 1, 0, 0, 0])).toBeCloseTo(0.088598, 6)
+  })
+
+  it('returns NaN if there is no solution', () => {
+    expect(irr([-1, -2, -3])).toBeNaN()
+  })
+
+  it('calculates with custom guess, tol and maxIter', () => {
+    expect(irr([-5, 10.5, 1, -8, 1], 0.1, 1e-10, 10)).toBeCloseTo(0.08859833852439172, 9)
+  })
+
+  it('returns null if can\'t calculate the result within the given number of iterations', () => {
+    expect(irr([-5, 10.5, 1, -8, 1], 0.1, 1e-10, 2)).toBeNaN()
   })
 })

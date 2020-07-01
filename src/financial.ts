@@ -396,6 +396,113 @@ export function rate (nper: number, pmt: number, pv: number, fv: number, when = 
 }
 
 /**
+ * Return the Internal Rate of Return (IRR).
+ *
+ * This is the "average" periodically compounded rate of return
+ * that gives a net present value of 0.0; for a more complete
+ * explanation, see Notes below.
+ *
+ * @param values - Input cash flows per time period.
+ *   By convention, net "deposits"
+ *   are negative and net "withdrawals" are positive.  Thus, for
+ *   example, at least the first element of `values`, which represents
+ *   the initial investment, will typically be negative.
+ * @param guess - Starting guess for solving the Internal Rate of Return
+ * @param tol - Required tolerance for the solution
+ * @param maxIter - Maximum iterations in finding the solution
+ *
+ * @returns Internal Rate of Return for periodic input values
+ *
+ * ## Notes
+ *
+ * The IRR is perhaps best understood through an example (illustrated
+ * using `irr` in the Examples section below).
+ *
+ * Suppose one invests 100
+ * units and then makes the following withdrawals at regular (fixed)
+ * intervals: 39, 59, 55, 20.  Assuming the ending value is 0, one's 100
+ * unit investment yields 173 units; however, due to the combination of
+ * compounding and the periodic withdrawals, the "average" rate of return
+ * is neither simply 0.73/4 nor (1.73)^0.25-1.
+ * Rather, it is the solution (for `r`) of the equation:
+ *
+ * ```
+ * -100 + 39/(1+r) + 59/((1+r)^2) + 55/((1+r)^3) + 20/((1+r)^4) = 0
+ * ```
+ *
+ * In general, for `values` = `[0, 1, ... M]`,
+ * `irr` is the solution of the equation:
+ *
+ * ```
+ * \\sum_{t=0}^M{\\frac{v_t}{(1+irr)^{t}}} = 0
+ * ```
+ *
+ * ## Example
+ *
+ * ```javascript
+ * import { irr } from 'financial'
+ *
+ * irr([-100, 39, 59, 55, 20]) // 0.28095
+ * irr([-100, 0, 0, 74]) // -0.0955
+ * irr([-100, 100, 0, -7]) // -0.0833
+ * irr([-100, 100, 0, 7]) // 0.06206
+ * irr([-5, 10.5, 1, -8, 1]) // 0.0886
+ * ```
+ *
+ * ## References
+ *
+ * - L. J. Gitman, "Principles of Managerial Finance, Brief," 3rd ed.,
+ *  Addison-Wesley, 2003, pg. 348.
+ */
+export function irr (values: number[], guess = 0.1, tol = 1e-6, maxIter = 100): number {
+  // Based on https://gist.github.com/ghalimi/4591338 by @ghalimi
+  // ASF licensed (check the link for the full license)
+  // Credits: algorithm inspired by Apache OpenOffice
+
+  // Initialize dates and check that values contains at
+  // least one positive value and one negative value
+  const dates : number[] = []
+  let positive = false
+  let negative = false
+  for (var i = 0; i < values.length; i++) {
+    dates[i] = (i === 0) ? 0 : dates[i - 1] + 365
+    if (values[i] > 0) {
+      positive = true
+    }
+    if (values[i] < 0) {
+      negative = true
+    }
+  }
+
+  // Return error if values does not contain at least one positive value and one negative value
+  if (!positive || !negative) {
+    return Number.NaN
+  }
+
+  // Initialize guess and resultRate
+  let resultRate = guess
+
+  // Implement Newton's method
+  let newRate, epsRate, resultValue
+  let iteration = 0
+  let contLoop = true
+  do {
+    resultValue = _irrResult(values, dates, resultRate)
+    newRate = resultRate - resultValue / _irrResultDeriv(values, dates, resultRate)
+    epsRate = Math.abs(newRate - resultRate)
+    resultRate = newRate
+    contLoop = (epsRate > tol) && (Math.abs(resultValue) > tol)
+  } while (contLoop && (++iteration < maxIter))
+
+  if (contLoop) {
+    return Number.NaN
+  }
+
+  // Return internal rate of return
+  return resultRate
+}
+
+/**
  * This function is here to simply have a different name for the 'fv'
  * function to not interfere with the 'fv' keyword argument within the 'ipmt'
  * function.  It is the 'remaining balance on loan' which might be useful as
@@ -427,4 +534,39 @@ function _gDivGp (r: number, n: number, p: number, x: number, y: number, when: P
     n * p * t2 * (r * w + 1) / r +
     p * (t1 - 1) * w / r)
   return g / gp
+}
+
+/**
+ * Calculates the resulting amount.
+ *
+ * Based on https://gist.github.com/ghalimi/4591338 by @ghalimi
+ * ASF licensed (check the link for the full license)
+ *
+ * @private
+ */
+function _irrResult (values: number[], dates: number[], rate: number): number {
+  const r = rate + 1
+  let result = values[0]
+  for (let i = 1; i < values.length; i++) {
+    result += values[i] / Math.pow(r, (dates[i] - dates[0]) / 365)
+  }
+  return result
+}
+
+/**
+ * Calculates the first derivation
+ *
+ * Based on https://gist.github.com/ghalimi/4591338 by @ghalimi
+ * ASF licensed (check the link for the full license)
+ *
+ * @private
+ */
+function _irrResultDeriv (values: number[], dates: number[], rate: number) : number {
+  const r = rate + 1
+  let result = 0
+  for (let i = 1; i < values.length; i++) {
+    const frac = (dates[i] - dates[0]) / 365
+    result -= frac * values[i] / Math.pow(r, frac + 1)
+  }
+  return result
 }
