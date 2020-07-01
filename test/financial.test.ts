@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, ppmt, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, pv, PaymentDueTime } from '../src/financial'
 
 // Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
@@ -78,5 +78,25 @@ describe('ppmt()', () => {
   it('calculates float when is begin', () => {
     expect(ppmt(0.1 / 12, 1, 60, 55000, 0, PaymentDueTime.Begin)).toBeCloseTo(-1158.929712, 6)
     expect(ppmt(0.08 / 12, 1, 60, 15000, 0, PaymentDueTime.Begin)).toBeCloseTo(-302.131703, 6)
+  })
+})
+
+describe('pv()', () => {
+  it('calculates float when is end', () => {
+    expect(pv(0.07, 20, 12000, 0)).toBeCloseTo(-127128.1709461939, 6)
+    expect(pv(0.07, 21, 12000, 0)).toBeCloseTo(-130026.3279870970, 6)
+    expect(pv(0.07, 22, 12000, 0)).toBeCloseTo(-132734.8859692500, 6)
+    expect(pv(0.07, 23, 12000, 0)).toBeCloseTo(-135266.2485693920, 6)
+    expect(pv(0.07, 24, 12000, 0)).toBeCloseTo(-137632.0080087780, 6)
+    expect(pv(0.07, 25, 12000, 0)).toBeCloseTo(-139842.9981390450, 6)
+  })
+
+  it('calculates float when is begin', () => {
+    expect(pv(0.07, 20, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-136027.1429124, 6)
+    expect(pv(0.07, 21, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-139128.1709461, 6)
+    expect(pv(0.07, 22, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-142026.3279870, 6)
+    expect(pv(0.07, 23, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-144734.8859692, 6)
+    expect(pv(0.07, 24, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-147266.2485693, 6)
+    expect(pv(0.07, 25, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-149632.0080087, 6)
   })
 })

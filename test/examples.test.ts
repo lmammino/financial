@@ -34,4 +34,8 @@ describe('Source code docs examples', () => {
     const interestpd = ipmts.reduce((a, b) => a + b, 0)
     expect(interestpd).toBeCloseTo(-112.98308424136215, 6)
   })
+
+  test('pv()', () => {
+    expect(f.pv(0.05 / 12, 10 * 12, -100, 15692.93)).toBeCloseTo(-100.00067131625819, 6)
+  })
 })

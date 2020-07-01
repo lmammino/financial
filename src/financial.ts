@@ -227,35 +227,8 @@ export function nper (rate: number, pmt: number, pv: number, fv = 0, when = Paym
  * ```
  * pmt = ppmt + ipmt
  * ```
- *
  */
 export function ipmt (rate: number, per: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End) : number {
-  // when = _convert_when(when)
-  // rate, per, nper, pv, fv, when = np.broadcast_arrays(rate, per, nper,
-  //                                                     pv, fv, when)
-
-  // total_pmt = pmt(rate, nper, pv, fv, when)
-  // ipmt_array = np.array(_rbl(rate, per, total_pmt, pv, when) * rate)
-
-  // # Payments start at the first period, so payments before that
-  // # don't make any sense.
-  // ipmt_array[per < 1] = _value_like(ipmt_array, np.nan)
-  // # If payments occur at the beginning of a period and this is the
-  // # first period, then no interest has accrued.
-  // per1_and_begin = (when == 1) & (per == 1)
-  // ipmt_array[per1_and_begin] = _value_like(ipmt_array, 0)
-  // # If paying at the beginning we need to discount by one period.
-  // per_gt_1_and_begin = (when == 1) & (per > 1)
-  // ipmt_array[per_gt_1_and_begin] = (
-  //     ipmt_array[per_gt_1_and_begin] / (1 + rate[per_gt_1_and_begin])
-  // )
-
-  // if np.ndim(ipmt_array) == 0:
-  //     # Follow the ufunc convention of returning scalars for scalar
-  //     # and 0d array inputs.
-  //     return ipmt_array.item(0)
-  // return ipmt_array
-
   // Payments start at the first period, so payments before that
   // don't make any sense.
   if (per < 1) {
@@ -294,6 +267,66 @@ export function ipmt (rate: number, per: number, nper: number, pv: number, fv = 
 export function ppmt (rate: number, per: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End) : number {
   const total = pmt(rate, nper, pv, fv, when)
   return total - ipmt(rate, per, nper, pv, fv, when)
+}
+
+/**
+ * Calculates the present value of an annuity investment based on constant-amount
+ * periodic payments and a constant interest rate.
+ *
+ * @param rate - Rate of interest (per period)
+ * @param nper - Number of compounding periods
+ * @param pmt - Payment
+ * @param fv - Future value
+ * @param when - When payments are due
+ *
+ * @returns the present value of a payment or investment
+ *
+ * ## Examples
+ *
+ * What is the present value (e.g., the initial investment)
+ * of an investment that needs to total $15692.93
+ * after 10 years of saving $100 every month?  Assume the
+ * interest rate is 5% (annually) compounded monthly.
+ *
+ * ```javascript
+ * import { pv } from 'financial'
+ *
+ * pv(0.05/12, 10*12, -100, 15692.93) // -100.00067131625819
+ * ```
+ *
+ * By convention, the negative sign represents cash flow out
+ * (i.e., money not available today).  Thus, to end up with
+ * $15,692.93 in 10 years saving $100 a month at 5% annual
+ * interest, one's initial deposit should also be $100.
+ *
+ * ## Notes
+ *
+ * The present value is computed by solving the equation:
+ *
+ * ```
+ * fv + pv * (1 + rate) ** nper + pmt * (1 + rate * when) / rate * ((1 + rate) ** nper - 1) = 0
+ * ```
+ *
+ * or, when `rate = 0`:
+ *
+ * ```
+ * fv + pv + pmt * nper = 0
+ * ```
+ *
+ * for `pv`, which is then returned.
+ *
+ * ## References
+ *
+ * [Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May)](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
+ */
+export function pv (rate: number, nper: number, pmt: number, fv = 0, when = PaymentDueTime.End): number {
+  const whenMult = when === PaymentDueTime.Begin ? 1 : 0
+  const isRateZero = rate === 0
+  const temp = (1 + rate) ** nper
+  const fact = isRateZero
+    ? nper
+    : (1 + rate * whenMult) * (temp - 1) / rate
+  return -(fv + pmt * fact) / temp
 }
 
 /**
