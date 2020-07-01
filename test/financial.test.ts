@@ -83,12 +83,12 @@ describe('ppmt()', () => {
 
 describe('pv()', () => {
   it('calculates float when is end', () => {
-    expect(pv(0.07, 20, 12000, 0)).toBeCloseTo(-127128.1709461939, 6)
-    expect(pv(0.07, 21, 12000, 0)).toBeCloseTo(-130026.3279870970, 6)
-    expect(pv(0.07, 22, 12000, 0)).toBeCloseTo(-132734.8859692500, 6)
-    expect(pv(0.07, 23, 12000, 0)).toBeCloseTo(-135266.2485693920, 6)
-    expect(pv(0.07, 24, 12000, 0)).toBeCloseTo(-137632.0080087780, 6)
-    expect(pv(0.07, 25, 12000, 0)).toBeCloseTo(-139842.9981390450, 6)
+    expect(pv(0.07, 20, 12000)).toBeCloseTo(-127128.1709461939, 6)
+    expect(pv(0.07, 21, 12000)).toBeCloseTo(-130026.3279870970, 6)
+    expect(pv(0.07, 22, 12000)).toBeCloseTo(-132734.8859692500, 6)
+    expect(pv(0.07, 23, 12000)).toBeCloseTo(-135266.2485693920, 6)
+    expect(pv(0.07, 24, 12000)).toBeCloseTo(-137632.0080087780, 6)
+    expect(pv(0.07, 25, 12000)).toBeCloseTo(-139842.9981390450, 6)
   })
 
   it('calculates float when is begin', () => {
@@ -98,6 +98,14 @@ describe('pv()', () => {
     expect(pv(0.07, 23, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-144734.8859692, 6)
     expect(pv(0.07, 24, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-147266.2485693, 6)
     expect(pv(0.07, 25, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-149632.0080087, 6)
+  })
+
+  it('calculates float when the rate is 0', () => {
+    expect(pv(0, 20, 12000, 0)).toBeCloseTo(-240000, 6)
+  })
+
+  it('calculates float when fv != 0', () => {
+    expect(pv(0, 20, 12000, 1000)).toBeCloseTo(-241000, 6)
   })
 })
 
@@ -113,5 +121,9 @@ describe('rate()', () => {
   it('Should return NaN for infeasible solution', () => {
     expect(rate(12, 400, 10000, 5000, PaymentDueTime.End)).toBeNaN()
     expect(rate(12, 400, 10000, 5000, PaymentDueTime.Begin)).toBeNaN()
+  })
+
+  it('calculates float with a custom guess, tolerance and maxIter', () => {
+    expect(rate(10, 0, -3500, 10000, PaymentDueTime.Begin, 0.2, 1e-5, 200)).toBeCloseTo(0.1106908, 6)
   })
 })
