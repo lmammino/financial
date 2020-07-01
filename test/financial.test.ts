@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, ppmt, pv, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, pv, rate, PaymentDueTime } from '../src/financial'
 
 // Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
@@ -98,5 +98,20 @@ describe('pv()', () => {
     expect(pv(0.07, 23, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-144734.8859692, 6)
     expect(pv(0.07, 24, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-147266.2485693, 6)
     expect(pv(0.07, 25, 12000, 0, PaymentDueTime.Begin)).toBeCloseTo(-149632.0080087, 6)
+  })
+})
+
+describe('rate()', () => {
+  it('calculates float when is end', () => {
+    expect(rate(10, 0, -3500, 10000)).toBeCloseTo(0.1106908, 6)
+  })
+
+  it('calculates float when is begin', () => {
+    expect(rate(10, 0, -3500, 10000, PaymentDueTime.Begin)).toBeCloseTo(0.1106908, 6)
+  })
+
+  it('Should return NaN for infeasible solution', () => {
+    expect(rate(12, 400, 10000, 5000, PaymentDueTime.End)).toBeNaN()
+    expect(rate(12, 400, 10000, 5000, PaymentDueTime.Begin)).toBeNaN()
   })
 })

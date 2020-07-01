@@ -2,9 +2,9 @@
  * When payments are due
  */
 export enum PaymentDueTime {
-  /** Payments due at the beginning of a period */
+  /** Payments due at the beginning of a period (1) */
   Begin = 'begin', // 1
-  /** Payments are due at the end of a period */
+  /** Payments are due at the end of a period (0) */
   End = 'end' // 0
 }
 
@@ -330,6 +330,72 @@ export function pv (rate: number, nper: number, pmt: number, fv = 0, when = Paym
 }
 
 /**
+ * Compute the rate of interest per period
+ *
+ * @param nper - Number of compounding periods
+ * @param pmt - Payment
+ * @param pv - Present value
+ * @param fv - Future value
+ * @param when - When payments are due ('begin' or 'end')
+ * @param guess - Starting guess for solving the rate of interest
+ * @param tol - Required tolerance for the solution
+ * @param maxIter - Maximum iterations in finding the solution
+ *
+ * @returns the rate of interest per period (or `NaN` if it could
+ *  not be computed within the number of iterations provided)
+ *
+ * ## Notes
+ *
+ * Use Newton's iteration until the change is less than 1e-6
+ * for all values or a maximum of 100 iterations is reached.
+ * Newton's rule is:
+ *
+ * ```
+ * r_{n+1} = r_{n} - g(r_n)/g'(r_n)
+ * ```
+ *
+ * where:
+ *
+ * - `g(r)` is the formula
+ * - `g'(r)` is the derivative with respect to r.
+ *
+ *
+ * The rate of interest is computed by iteratively solving the
+ * (non-linear) equation:
+ *
+ * ```
+ * fv + pv * (1+rate) ** nper + pmt * (1+rate * when) / rate * ((1+rate) ** nper - 1) = 0
+ * ```
+ *
+ * for `rate.
+ *
+ * ## References
+ *
+ * [Wheeler, D. A., E. Rathke, and R. Weir (Eds.) (2009, May)](http://www.oasis-open.org/committees/documents.php?wg_abbrev=office-formulaOpenDocument-formula-20090508.odt).
+ */
+export function rate (nper: number, pmt: number, pv: number, fv: number, when = PaymentDueTime.End, guess = 0.1, tol = 1e-6, maxIter = 100) : number {
+  let rn = guess
+  let iterator = 0
+  let close = false
+
+  while (iterator < maxIter && !close) {
+    const rnp1 = rn - _gDivGp(rn, nper, pmt, pv, fv, when)
+    const diff = Math.abs(rnp1 - rn)
+    close = diff < tol
+    iterator++
+    rn = rnp1
+  }
+
+  // if exausted all the iterations and the result is not
+  // close enough, returns `NaN`
+  if (!close) {
+    return Number.NaN
+  }
+
+  return rn
+}
+
+/**
  * This function is here to simply have a different name for the 'fv'
  * function to not interfere with the 'fv' keyword argument within the 'ipmt'
  * function.  It is the 'remaining balance on loan' which might be useful as
@@ -339,4 +405,26 @@ export function pv (rate: number, nper: number, pmt: number, fv = 0, when = Paym
  */
 function _rbl (rate: number, per: number, pmt: number, pv: number, when: PaymentDueTime) {
   return fv(rate, (per - 1), pmt, pv, when)
+}
+
+/**
+ * Evaluates `g(r_n)/g'(r_n)`, where:
+ *
+ * ```
+ * g = fv + pv * (1+rate) ** nper + pmt * (1+rate * when)/rate * ((1+rate) ** nper - 1)
+ * ```
+ *
+ * @private
+ */
+function _gDivGp (r: number, n: number, p: number, x: number, y: number, when: PaymentDueTime): number {
+  const w = when === PaymentDueTime.Begin ? 1 : 0
+
+  const t1 = (r + 1) ** n
+  const t2 = (r + 1) ** (n - 1)
+  const g = y + t1 * x + p * (t1 - 1) * (r * w + 1) / r
+  const gp = (n * t2 * x -
+    p * (t1 - 1) * (r * w + 1) / (r ** 2) +
+    n * p * t2 * (r * w + 1) / r +
+    p * (t1 - 1) * w / r)
+  return g / gp
 }
