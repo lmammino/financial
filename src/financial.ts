@@ -1,5 +1,7 @@
 /**
  * When payments are due
+ *
+ * @since v0.0.12
  */
 export enum PaymentDueTime {
   /** Payments due at the beginning of a period (1) */
@@ -18,6 +20,8 @@ export enum PaymentDueTime {
  * @param when - When payment was made
  *
  * @returns The value at the end of the `nper` periods
+ *
+ * @since v0.0.12
  *
  * ## Examples
  *
@@ -75,6 +79,8 @@ export function fv (rate: number, nper: number, pmt: number, pv: number, when : 
  * @param when - When payments are due
  *
  * @returns the (fixed) periodic payment
+ *
+ * @since v0.0.12
  *
  * ## Examples
  *
@@ -141,6 +147,8 @@ export function pmt (rate: number, nper: number, pv: number, fv = 0, when = Paym
  *
  * @returns The number of periodic payments
  *
+ * @since v0.0.12
+ *
  * ## Examples
  *
  * If you only had $150/month to pay towards the loan, how long would it take
@@ -190,6 +198,8 @@ export function nper (rate: number, pmt: number, pv: number, fv = 0, when = Paym
  * @param when - When payments are due
  *
  * @returns Interest portion of payment
+ *
+ * @since v0.0.12
  *
  * ## Examples
  *
@@ -263,6 +273,8 @@ export function ipmt (rate: number, per: number, nper: number, pv: number, fv = 
  * @param when - When payments are due
  *
  * @returns the payment against loan principal
+ *
+ * @since v0.0.14
  */
 export function ppmt (rate: number, per: number, nper: number, pv: number, fv = 0, when = PaymentDueTime.End) : number {
   const total = pmt(rate, nper, pv, fv, when)
@@ -280,6 +292,8 @@ export function ppmt (rate: number, per: number, nper: number, pv: number, fv = 
  * @param when - When payments are due
  *
  * @returns the present value of a payment or investment
+ *
+ * @since v0.0.15
  *
  * ## Examples
  *
@@ -343,6 +357,8 @@ export function pv (rate: number, nper: number, pmt: number, fv = 0, when = Paym
  *
  * @returns the rate of interest per period (or `NaN` if it could
  *  not be computed within the number of iterations provided)
+ *
+ * @since v0.0.16
  *
  * ## Notes
  *
@@ -413,6 +429,8 @@ export function rate (nper: number, pmt: number, pv: number, fv: number, when = 
  *
  * @returns Internal Rate of Return for periodic input values
  *
+ * @since v0.0.17
+ *
  * ## Notes
  *
  * The IRR is perhaps best understood through an example (illustrated
@@ -464,7 +482,7 @@ export function irr (values: number[], guess = 0.1, tol = 1e-6, maxIter = 100): 
   const dates : number[] = []
   let positive = false
   let negative = false
-  for (var i = 0; i < values.length; i++) {
+  for (let i = 0; i < values.length; i++) {
     dates[i] = (i === 0) ? 0 : dates[i - 1] + 365
     if (values[i] > 0) {
       positive = true
@@ -474,7 +492,8 @@ export function irr (values: number[], guess = 0.1, tol = 1e-6, maxIter = 100): 
     }
   }
 
-  // Return error if values does not contain at least one positive value and one negative value
+  // Return error if values does not contain at least one positive
+  // value and one negative value
   if (!positive || !negative) {
     return Number.NaN
   }
@@ -514,6 +533,8 @@ export function irr (values: number[], guess = 0.1, tol = 1e-6, maxIter = 100): 
  * "withdrawals" are positive; `values` must begin with the initial
  * investment, thus `values[0]` will typically be negative.
  * @returns The NPV of the input cash flow series `values` at the discount `rate`.
+ *
+ * @since v0.0.18
  *
  * ## Warnings
  *
@@ -569,6 +590,42 @@ export function npv (rate: number, values: number[]) : number {
     (acc, curr, i) => acc + (curr / (1 + rate) ** i),
     0
   )
+}
+
+/**
+ * Calculates the Modified Internal Rate of Return.
+ *
+ * @param values - Cash flows (must contain at least one positive and one negative
+ *   value) or nan is returned.  The first value is considered a sunk
+ *   cost at time zero.
+ * @param financeRate - Interest rate paid on the cash flows
+ * @param reinvestRate - Interest rate received on the cash flows upon reinvestment
+ *
+ * @returns Modified internal rate of return
+ *
+ * @since v0.1.0
+ */
+export function mirr (values: number[], financeRate: number, reinvestRate: number): number {
+  let positive = false
+  let negative = false
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] > 0) {
+      positive = true
+    }
+    if (values[i] < 0) {
+      negative = true
+    }
+  }
+
+  // Return error if values does not contain at least one
+  // positive value and one negative value
+  if (!positive || !negative) {
+    return Number.NaN
+  }
+
+  const numer = Math.abs(npv(reinvestRate, values.map((x) => x > 0 ? x : 0)))
+  const denom = Math.abs(npv(financeRate, values.map(x => x < 0 ? x : 0)))
+  return (numer / denom) ** (1 / (values.length - 1)) * (1 + reinvestRate) - 1
 }
 
 /**

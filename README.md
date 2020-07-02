@@ -81,16 +81,16 @@ There's no `default` export in the ESM implementation, so you have to explicitel
 
 ## Implemented functions
 
- - [X] `fv`
- - [X] `pmt`
- - [X] `nper`
- - [X] `ipmt`
- - [X] `ppmt`
- - [X] `pv`
- - [X] `rate`
- - [X] `irr`
- - [X] `npv`
- - [ ] `mirr`
+ - [X] `fv` (since v0.0.12)
+ - [X] `pmt` (since v0.0.12)
+ - [X] `nper` (since v0.0.12)
+ - [X] `ipmt` (since v0.0.12)
+ - [X] `ppmt` (since v0.0.14)
+ - [X] `pv` (since v0.0.15)
+ - [X] `rate` (since v0.0.16)
+ - [X] `irr` (since v0.0.17)
+ - [X] `npv` (since v0.0.18)
+ - [X] `mirr` (since 0.1.0)
 
 
 ## Local Development

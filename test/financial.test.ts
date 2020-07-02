@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, ppmt, pv, rate, irr, npv, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, pv, rate, irr, npv, mirr, PaymentDueTime } from '../src/financial'
 
 // Mostly based on
 // https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
@@ -159,5 +159,18 @@ describe('irr()', () => {
 describe('npv()', () => {
   it('calculates float', () => {
     expect(npv(0.05, [-15000, 1500, 2500, 3500, 4500, 6000])).toBeCloseTo(122.894855, 6)
+  })
+})
+
+describe('mirr()', () => {
+  it('calculates float', () => {
+    expect(mirr([-4500, -800, 800, 800, 600, 600, 800, 800, 700, 3000], 0.08, 0.055)).toBeCloseTo(0.066597, 6)
+    expect(mirr([-120000, 39000, 30000, 21000, 37000, 46000], 0.10, 0.12)).toBeCloseTo(0.126094, 6)
+    expect(mirr([100, 200, -50, 300, -200], 0.05, 0.06)).toBeCloseTo(0.342823, 6)
+  })
+
+  it('returns NaN if mirr() cannot be calculated', () => {
+    expect(mirr([39000, 30000, 21000, 37000, 46000], 0.10, 0.12)).toBeNaN()
+    expect(mirr([-39000, -30000, -21000, -37000, -46000], 0.10, 0.12)).toBeNaN()
   })
 })
