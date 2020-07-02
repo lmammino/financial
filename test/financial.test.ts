@@ -1,6 +1,7 @@
-import { fv, pmt, nper, ipmt, ppmt, pv, rate, irr, PaymentDueTime } from '../src/financial'
+import { fv, pmt, nper, ipmt, ppmt, pv, rate, irr, npv, PaymentDueTime } from '../src/financial'
 
-// Based on https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
+// Mostly based on
+// https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py
 
 describe('fv()', () => {
   it('calculates float when is end', () => {
@@ -152,5 +153,11 @@ describe('irr()', () => {
 
   it('returns null if can\'t calculate the result within the given number of iterations', () => {
     expect(irr([-5, 10.5, 1, -8, 1], 0.1, 1e-10, 2)).toBeNaN()
+  })
+})
+
+describe('npv()', () => {
+  it('calculates float', () => {
+    expect(npv(0.05, [-15000, 1500, 2500, 3500, 4500, 6000])).toBeCloseTo(122.894855, 6)
   })
 })

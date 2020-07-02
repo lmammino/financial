@@ -46,4 +46,14 @@ describe('Source code docs examples', () => {
     expect(f.irr([-100, 100, 0, 7])).toBeCloseTo(0.0620584, 6)
     expect(f.irr([-5, 10.5, 1, -8, 1])).toBeCloseTo(0.088598, 6)
   })
+
+  test('npv()', () => {
+    const rate = 0.08
+    const cashflows = [-40_000, 5000, 8000, 12000, 30000]
+    expect(f.npv(rate, cashflows)).toBeCloseTo(3065.22266817, 6)
+
+    const initialCashflow = cashflows[0]
+    cashflows[0] = 0
+    expect(f.npv(rate, cashflows) + initialCashflow).toBeCloseTo(3065.22266817, 6)
+  })
 })
