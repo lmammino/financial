@@ -7,10 +7,13 @@
 
 A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno** and **the browser**.
 
-It does support the same functionality offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
+It does support the same functionality offered by `numpy-financial` but it only support scalar JavaScript `number` values (NO numpy-like array values) and it does NOT support arbitrary-precision signed decimal numbers (such as decimal.js, big.js or bignumber.js).
 
 
 📖 **API DOCS** 📖 : [financialjs.netlify.app](https://financialjs.netlify.app)
+
+
+[![Example usage in a picture](https://repository-images.githubusercontent.com/275629272/b295b880-bd3e-11ea-8860-705f2f6427ec)](https://repository-images.githubusercontent.com/275629272/b295b880-bd3e-11ea-8860-705f2f6427ec)
 
 
 ## Install
@@ -93,16 +96,18 @@ assertEquals(f.fv(0.05 / 12, 10 * 12, -100, -100), 15692.928894335755)
 
 ## Implemented functions
 
- - [X] `fv` (since v0.0.12)
- - [X] `pmt` (since v0.0.12)
- - [X] `nper` (since v0.0.12)
- - [X] `ipmt` (since v0.0.12)
- - [X] `ppmt` (since v0.0.14)
- - [X] `pv` (since v0.0.15)
- - [X] `rate` (since v0.0.16)
- - [X] `irr` (since v0.0.17)
- - [X] `npv` (since v0.0.18)
- - [X] `mirr` (since 0.1.0)
+Click on the function name to get the full documentation for every function, or check out the full programmatic documentation at [financialjs.netlify.app](https://financialjs.netlify.app).
+
+ - [X] [`fv()`: Future Value](https://financialjs.netlify.app/modules/_financial_.html#fv) (since v0.0.12)
+ - [X] [`pmt()`: Total payment](https://financialjs.netlify.app/modules/_financial_.html#pmt) (since v0.0.12)
+ - [X] [`nper()`: Number of period payments](https://financialjs.netlify.app/modules/_financial_.html#nper) (since v0.0.12)
+ - [X] [`ipmt()`: Interest portion of a payment](https://financialjs.netlify.app/modules/_financial_.html#ipmt) (since v0.0.12)
+ - [X] [`ppmt()`: Payment against loan principal](https://financialjs.netlify.app/modules/_financial_.html#ppmt) (since v0.0.14)
+ - [X] [`pv()`: Present Value](https://financialjs.netlify.app/modules/_financial_.html#pv) (since v0.0.15)
+ - [X] [`rate()`: Rate of interest per period](https://financialjs.netlify.app/modules/_financial_.html#rate) (since v0.0.16)
+ - [X] [`irr()`: Internal Rate of Return](https://financialjs.netlify.app/modules/_financial_.html#irr) (since v0.0.17)
+ - [X] [`npv()`: Net Present Value](https://financialjs.netlify.app/modules/_financial_.html#npv) (since v0.0.18)
+ - [X] [`mirr()`: Modified Internal Rate of Return](https://financialjs.netlify.app/modules/_financial_.html#mirr) (since 0.1.0)
 
 
 ## Local Development
