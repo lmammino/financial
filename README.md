@@ -94,7 +94,7 @@ assertEquals(f.fv(0.05 / 12, 10 * 12, -100, -100), 15692.928894335755)
 ```
 
 
-## Implemented functions
+## Implemented functions and Documentation
 
 Click on the function name to get the full documentation for every function, or check out the full programmatic documentation at [financialjs.netlify.app](https://financialjs.netlify.app).
 
