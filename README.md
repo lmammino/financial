@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/lmammino/financial/branch/master/graph/badge.svg)](https://codecov.io/gh/lmammino/financial)
 [![Documentation](https://api.netlify.com/api/v1/badges/eca2653e-dcaa-41db-865c-ab635687e69d/deploy-status)](https://financialjs.netlify.app/)
 
-A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on both Node.js and the browser.
+A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno** and **the browser**.
 
 It does support the same functionality offered by `numpy-financial` but it only support scalar values (no numpy-like array values) and it does not support decimal values.
 
@@ -79,6 +79,18 @@ import { fv, pmt } from 'financial'
 There's no `default` export in the ESM implementation, so you have to explicitely import the functionality you need, one by one.
 
 
+### Use with Deno
+
+Make sure you specify the version you prefer in the import URL:
+
+```typescript
+import { assertEquals } from 'https://deno.land/std/testing/asserts.ts'
+import * as f from 'https://deno.land/x/npm:financial@0.1.1/src/financial.ts'
+
+assertEquals(f.fv(0.05 / 12, 10 * 12, -100, -100), 15692.928894335755)
+```
+
+
 ## Implemented functions
 
  - [X] `fv` (since v0.0.12)
@@ -102,6 +114,15 @@ Below is a list of commands you will probably find useful.
  - `npm run build:docs` or `yarn build:docs`: Builds the API documentation in the `docs` folder using `typedoc`.
  - `npm test` or `yarn test`: Runs the test watcher (Jest) in an interactive mode. it runs tests related to files changed since the last commit.
  - `npm run test:watch` or `yarn test:watch`: runs the tests in watch mode
+
+
+### Test with Deno
+
+To test with Deno, run:
+
+```bash
+deno test test/deno.ts
+```
 
 
 ## Contributing

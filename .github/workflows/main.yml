@@ -14,6 +14,11 @@ jobs:
         with:
           node-version: 12.x
 
+      - name: Use Deno 1.x
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+
       - name: Use cached node_modules
         uses: actions/cache@v1
         with:
@@ -42,6 +47,9 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/lcov.info
+
+      - name: test with Deno
+        run: deno test test/deno.ts
 
       - name: Build
         run: yarn build
