@@ -7,7 +7,7 @@
 
 A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno** and **the browser**.
 
-It does support the same functionality offered by `numpy-financial` but it only support scalar JavaScript `number` values (NO numpy-like array values) and it does NOT support arbitrary-precision signed decimal numbers (such as decimal.js, big.js or bignumber.js).
+It does support the same functionality offered by `numpy-financial` but it only supports scalar JavaScript `number` values (NO numpy-like array values) and it does NOT support arbitrary-precision signed decimal numbers (such as decimal.js, big.js or bignumber.js).
 
 
 📖 **API DOCS** 📖 : [financialjs.netlify.app](https://financialjs.netlify.app)
