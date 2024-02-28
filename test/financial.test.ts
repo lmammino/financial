@@ -10,7 +10,7 @@ import {
   npv,
   mirr,
   PaymentDueTime,
-} from '../src/index.ts'
+} from '../src/index'
 
 // Mostly based on
 // https://github.com/numpy/numpy-financial/blob/master/numpy_financial/tests/test_financial.py

@@ -1,4 +1,4 @@
-import { fv, pmt, nper, ipmt, pv, irr, npv } from '../src/index.ts'
+import { fv, pmt, nper, ipmt, pv, irr, npv } from '../src/index'
 
 describe('Source code docs examples', () => {
   test('fv()', () => {

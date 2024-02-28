@@ -43,6 +43,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@biomejs/biome@^1.5.3",
+        "npm:@types/jest@^29.5.12",
         "npm:dts-cli@^2.0.4",
         "npm:typedoc@^0.25.9",
         "npm:typescript@^5.3.3"

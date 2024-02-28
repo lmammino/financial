@@ -29,7 +29,7 @@
     "lint:ts": "tsc --noEmit --incremental false --diagnostics",
     "test:node": "dts test",
     "test:deno": "deno test test/deno.ts",
-    "test:bun": "bun test test/bun.test.ts"
+    "test:bun": "bun test ./test/bun.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
