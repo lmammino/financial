@@ -2,7 +2,8 @@
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": false,
-  "[typescript][javascript][json]": {
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome",
     "editor.codeActionsOnSave": {
       "source.fixAll": "always",
@@ -10,11 +11,20 @@
       "source.organizeImports.biome": "always"
     }
   },
-  "typescript.tsdk": "node_modules/typescript/lib",
   "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "quickfix.biome": "always",
+      "source.organizeImports.biome": "always"
+    }
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "quickfix.biome": "always",
+      "source.organizeImports.biome": "always"
+    }
   }
 }
