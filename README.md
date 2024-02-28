@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/financial.svg)](https://badge.fury.io/js/financial)
 [![CI](https://github.com/lmammino/financial/workflows/CI/badge.svg)](https://github.com/lmammino/financial/actions?query=workflow%3ACI)
-[![codecov](https://codecov.io/gh/lmammino/financial/branch/master/graph/badge.svg)](https://codecov.io/gh/lmammino/financial)
+[![codecov](https://codecov.io/gh/lmammino/financial/branch/main/graph/badge.svg)](https://codecov.io/gh/lmammino/financial)
 [![Documentation](https://api.netlify.com/api/v1/badges/eca2653e-dcaa-41db-865c-ab635687e69d/deploy-status)](https://financialjs.netlify.app/)
 
 A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno**, **Bun** and **the browser**.
