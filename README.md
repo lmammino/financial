@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/lmammino/financial/branch/master/graph/badge.svg)](https://codecov.io/gh/lmammino/financial)
 [![Documentation](https://api.netlify.com/api/v1/badges/eca2653e-dcaa-41db-865c-ab635687e69d/deploy-status)](https://financialjs.netlify.app/)
 
-A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno** and **the browser**.
+A Zero-Dependency TypeScript / JavaScript financial utility library inspired by [numpy-financial](https://github.com/numpy/numpy-financial/) that can be used on **Node.js**, **Deno**, **Bun** and **the browser**.
 
 It does support the same functionality offered by `numpy-financial` but it only supports scalar JavaScript `number` values (NO numpy-like array values) and it does NOT support arbitrary-precision signed decimal numbers (such as decimal.js, big.js or bignumber.js).
 

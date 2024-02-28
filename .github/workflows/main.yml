@@ -7,38 +7,43 @@ jobs:
 
     steps:
       - name: Begin CI...
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Use Node 12
-        uses: actions/setup-node@v1
+      - uses: pnpm/action-setup@v2
         with:
-          node-version: 12.x
+          version: 8
+
+      - name: Use Node 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Use Deno 1.x
         uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
 
-      - name: Use cached node_modules
-        uses: actions/cache@v1
+      - uses: oven-sh/setup-bun@v1
         with:
-          path: node_modules
-          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            nodeModules-
+          bun-version: latest
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - name: Lint (Biome)
+        run: pnpm run lint:biome
         env:
           CI: true
 
-      - name: Lint
-        run: yarn lint
+      - name: Lint (TypeScript)
+        run: pnpm run lint:ts
         env:
           CI: true
 
-      - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
+      - name: Test (Node.js)
+        run: pnpm run test:node
         env:
           CI: true
 
@@ -48,15 +53,22 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage/lcov.info
 
-      - name: test with Deno
-        run: deno test test/deno.ts
+      - name: Test (Deno)
+        run: pnpm run test:deno
+        env:
+          CI: true
+
+      - name: Test (Bun)
+        run: pnpm run test:bun
+        env:
+          CI: true
 
       - name: Build
-        run: yarn build
+        run: pnpm run build:ts
         env:
           CI: true
 
       - name: Build (docs)
-        run: yarn run build:docs
+        run: pnpm run build:docs
         env:
           CI: true

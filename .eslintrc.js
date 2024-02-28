@@ -2,22 +2,18 @@ module.exports = {
   env: {
     es2020: true,
     node: true,
-    jest: true
+    jest: true,
   },
-  extends: [
-    'standard'
-  ],
+  extends: ['standard'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 11,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  plugins: [
-    '@typescript-eslint'
-  ],
+  plugins: ['@typescript-eslint'],
   ignorePatterns: ['dist/**.js'],
   rules: {
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'error'
-  }
+    '@typescript-eslint/no-unused-vars': 'error',
+  },
 }
