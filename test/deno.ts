@@ -1,13 +1,5 @@
 import { assertEquals } from 'https://deno.land/std/assert/mod.ts'
-import {
-  fv,
-  pmt,
-  nper,
-  ipmt,
-  pv,
-  irr,
-  npv,
-} from '../src/index.ts'
+import { fv, pmt, nper, ipmt, pv, irr, npv } from '../src/index.ts'
 
 Deno.test('fv()', () => {
   assertEquals(fv(0.05 / 12, 10 * 12, -100, -100), 15692.928894335755)
@@ -24,9 +16,7 @@ Deno.test('nper()', () => {
 Deno.test('ipmt()', () => {
   const principal = 2500
   const periods = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  const ipmts = periods.map((per) =>
-    ipmt(0.0824 / 12, per, 1 * 12, principal),
-  )
+  const ipmts = periods.map((per) => ipmt(0.0824 / 12, per, 1 * 12, principal))
   assertEquals(
     ipmts,
     [

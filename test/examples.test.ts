@@ -1,12 +1,4 @@
-import {
-  fv,
-  pmt,
-  nper,
-  ipmt,
-  pv,
-  irr,
-  npv,
-} from '../src/index.ts'
+import { fv, pmt, nper, ipmt, pv, irr, npv } from '../src/index.ts'
 
 describe('Source code docs examples', () => {
   test('fv()', () => {
@@ -17,10 +9,7 @@ describe('Source code docs examples', () => {
   })
 
   test('pmt()', () => {
-    expect(pmt(0.075 / 12, 12 * 15, 200000)).toBeCloseTo(
-      -1854.0247200054619,
-      6,
-    )
+    expect(pmt(0.075 / 12, 12 * 15, 200000)).toBeCloseTo(-1854.0247200054619, 6)
   })
 
   test('nper()', () => {
@@ -65,9 +54,6 @@ describe('Source code docs examples', () => {
 
     const initialCashflow = cashflows[0]
     cashflows[0] = 0
-    expect(npv(rate, cashflows) + initialCashflow).toBeCloseTo(
-      3065.22266817,
-      6,
-    )
+    expect(npv(rate, cashflows) + initialCashflow).toBeCloseTo(3065.22266817, 6)
   })
 })

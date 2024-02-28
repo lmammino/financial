@@ -16,11 +16,7 @@
         "all": true
       }
     },
-    "ignore": [
-      "coverage/",
-      "dist/",
-      "node_modules/"
-    ]
+    "ignore": ["coverage/", "dist/", "node_modules/", "docs/"]
   },
   "formatter": {
     "enabled": true,
@@ -28,22 +24,13 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 80,
-    "ignore": [
-      "coverage/",
-      "dist/",
-      "node_modules/"
-    ]
+    "ignore": ["coverage/", "dist/", "node_modules/", "docs/"]
   },
   "javascript": {
     "formatter": {
       "semicolons": "asNeeded",
       "quoteStyle": "single"
-    }
-    "globals": [
-      "Deno",
-      "describe",
-      "test",
-      "expect"
-    ]
+    },
+    "globals": ["Deno", "describe", "test", "expect", "it"]
   }
 }
