@@ -26,7 +26,7 @@
     "build:ts": "dts build",
     "build:docs": "typedoc --out docs/ src/",
     "lint:biome": "biome lint . && biome format .",
-    "lint:ts": "tsc --noEmit src/index.ts",
+    "lint:ts": "tsc --noEmit --incremental false --diagnostics",
     "test:node": "dts test",
     "test:deno": "deno test test/deno.ts",
     "test:bun": "bun test test/bun.test.ts"
