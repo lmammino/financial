@@ -27,7 +27,7 @@
     "build:docs": "typedoc --out docs/ src/",
     "lint:biome": "biome lint . && biome format .",
     "lint:ts": "tsc --noEmit --incremental false --diagnostics",
-    "test:node": "dts test",
+    "test:node": "dts test --coverage",
     "test:deno": "deno test test/deno.ts",
     "test:bun": "bun test ./test/bun.ts"
   },
