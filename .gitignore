@@ -5,3 +5,5 @@ dist/
 docs/
 coverage/
 .npmrc
+src/*.js
+test/*.js
