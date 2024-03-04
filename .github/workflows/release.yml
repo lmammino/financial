@@ -30,6 +30,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build (lib)
+        run: pnpm run build:ts
+        env:
+          CI: true
+
       - name: Build (docs)
         run: pnpm run build:docs
         env:
