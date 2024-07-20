@@ -24,13 +24,14 @@
     "build:docs": "typedoc --out docs/ src/",
     "lint:biome": "biome lint . && biome format .",
     "lint:ts": "tsc --noEmit --incremental false --diagnostics",
-    "test:node": "pnpm dlx poku --parallel test/*.test.ts",
+    "test:node": "c8 --reporter lcov tsx test/*.test.ts",
     "test:deno": "deno run --allow-env --allow-read --allow-run npm:poku --parallel test/*.test.ts",
     "test:bun": "bunx poku --parallel test/*.test.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@types/jest": "^29.5.12",
+    "c8": "^10.1.2",
     "dts-cli": "^2.0.4",
     "poku": "^2.1.0",
     "tsx": "^4.16.2",
