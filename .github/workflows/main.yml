@@ -9,9 +9,7 @@ jobs:
       - name: Begin CI...
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      - uses: pnpm/action-setup@v4
 
       - name: Use Node 20.x
         uses: actions/setup-node@v4
