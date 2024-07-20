@@ -24,14 +24,16 @@
     "build:docs": "typedoc --out docs/ src/",
     "lint:biome": "biome lint . && biome format .",
     "lint:ts": "tsc --noEmit --incremental false --diagnostics",
-    "test:node": "dts test --coverage",
-    "test:deno": "deno test test/deno.ts",
-    "test:bun": "bun test ./test/bun.ts"
+    "test:node": "pnpm dlx poku --parallel test/*.test.ts",
+    "test:deno": "deno run --allow-env --allow-read --allow-run npm:poku --parallel test/*.test.ts",
+    "test:bun": "bunx poku --parallel test/*.test.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@types/jest": "^29.5.12",
     "dts-cli": "^2.0.4",
+    "poku": "^2.1.0",
+    "tsx": "^4.16.2",
     "typedoc": "^0.25.9",
     "typescript": "^5.3.3"
   },
@@ -50,5 +52,6 @@
     "irr",
     "npv",
     "mirr"
-  ]
+  ],
+  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
 }
